@@ -2,19 +2,19 @@ require("dotenv").config();
 
 module.exports = {
   development: {
-    username: process.env.DB_USER || "root",
-    password: process.env.DB_PASS || "",
-    database: process.env.DB_Name || "node_backend",
-    host: process.env.DB_HOST || "127.0.0.1",
+    username: process.env.DB_USER || "u949956213_node_backend",
+    password: process.env.DB_PASS || "Alp01011997@",
+    database: process.env.DB_Name || "u949956213_node_backend",
+    host: process.env.DB_HOST || "srv1958.hstgr.io",
     dialect: "mysql",
     logging: false
   },
-  test: {
-    username: process.env.DB_USER || "root",
-    password: process.env.DB_PASS || "",
-    database: "database_test",
-    host: "127.0.0.1",
+    username: process.env.DB_USER || "u949956213_node_backend",
+    password: process.env.DB_PASS || "Alp01011997@",
+    database: process.env.DB_Name || "u949956213_node_backend",
+    host: process.env.DB_HOST || "srv1958.hstgr.io",
     dialect: "mysql",
+    logging: false
   },
   production: {
     username: process.env.DB_USER,
