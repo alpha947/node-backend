@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Service API Node.js
+  api:
+    build: .
+    container_name: backend-api
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - DB_USER=${DB_USER:-root}
+      - DB_PASS=${DB_PASS:-password}
+      - DB_Name=${DB_Name:-quadB}
+      - DB_HOST=mysql
+      - PORT=8080
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET:-your-secret-key}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET:-your-refresh-key}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Service MySQL Database
+  mysql:
+    image: mysql:5.7
+    container_name: backend-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS:-password}
+      MYSQL_DATABASE: ${DB_Name:-quadB}
+      MYSQL_USER: ${DB_USER:-root}
+      MYSQL_PASSWORD: ${DB_PASS:-password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  backend-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
